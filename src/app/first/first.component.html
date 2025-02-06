@@ -1,0 +1,49 @@
+
+
+<div class="form-container">
+    
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+    
+      <label>Full Name</label>
+      <input type="text" formControlName="fullName" />
+  
+   
+      <label>Username</label>
+      <input type="text" formControlName="username">
+      <div *ngIf="registerForm.get('username')?.invalid && registerForm.get('username')?.touched" class="error">
+        Username must be at least 6 characters
+      </div>
+  
+      
+      <label>Email</label>
+      <input type="email" formControlName="email" >
+      <div *ngIf="registerForm.get('email')?.invalid && registerForm.get('email')?.touched" class="error">
+        Email is invalid
+      </div>
+  
+      <label>Password</label>
+      <input type="password" formControlName="password" >
+  
+      <label>Confirm Password</label>
+      <input type="password" formControlName="confirmPassword">
+      <div *ngIf="registerForm.get('confirmPassword')?.touched && registerForm.get('confirmPassword')?.value !== registerForm.get('password')?.value" class="error">
+        Confirm Password does not match
+      </div>
+  
+    
+      <label>
+        <input type="checkbox" formControlName="acceptTerms" >
+        I have read and agree to the Terms 
+    </label>
+    <div *ngIf="registerForm.get('acceptTerms')?.invalid && registerForm.get('acceptTerms')?.touched" class="error">
+        Accept Terms is required
+       
+      </div>
+    <div class="btn1">
+      <button type="submit"  [disabled]="registerForm.invalid" class="register-btn">Register</button>
+      <button type="reset"  class="reset-btn">Reset</button>
+</div>
+  </form> 
+
+  </div>
+  

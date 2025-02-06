@@ -1,0 +1,50 @@
+.form-container {
+    max-width: 200px;
+  
+    margin-left:30%;
+    font-family: Arial, sans-serif;
+  }
+  
+  label {
+    display: block;
+    margin-top: 10px;
+    font-weight: bold;
+  }
+  
+  input[type="text"], input[type="email"], input[type="password"] {
+    width: 200%;
+    padding: 8px;
+    margin: 5px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  .error {
+    color: red;
+    font-size: 12px;
+  }
+  
+  .register-btn {
+    /* margin-top: 15px; */
+    padding: 10px;
+    background-color:blue;
+    color: white;
+
+  }
+  
+  
+  
+  .reset-btn {
+   
+    /* margin-left: 50px; */
+    margin-right: 25%;
+    padding: 10px;
+    background-color: #ffcc00;
+
+  }
+  .btn1{
+    width: 500px;
+    padding-top: 10%;
+    display: flex;
+    justify-content:space-between;
+  }
