@@ -32,14 +32,6 @@ export class SecondComponent {
   }
 
 
-ngOnInit() {
-  const savedData = localStorage.getItem('formData');
-  if (savedData) {
-    this.submittedData = JSON.parse(savedData);
-  }
-}
-
-
  
   get units(): FormArray {
     return this.form.get('units') as FormArray;
@@ -71,7 +63,6 @@ ngOnInit() {
 
   patchDefaultValues(): void {
     this.form.patchValue({
-     
       country: 'Slovakia',
       address: {
         city: 'Nove Zamky',
@@ -80,23 +71,21 @@ ngOnInit() {
     });
   }
 
-  
-
-
   submit() {
     if (this.form.valid) {
       const formData = this.form.getRawValue();
-  
     
       const existingData = JSON.parse(localStorage.getItem('formData') || '[]');
   
-      
       existingData.push(formData);
-  
      
       localStorage.setItem('formData', JSON.stringify(existingData));
   
       alert('Form submitted successfully!');
+      const savedData = localStorage.getItem('formData');
+      if (savedData) {
+        this.submittedData = JSON.parse(savedData);
+      }
       this.form.reset();
     } else {
       alert('Please fill in all required fields.');
