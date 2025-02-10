@@ -13,6 +13,7 @@ import { FormGroup, FormControl,FormBuilder,FormArray } from '@angular/forms';
 export class SecondComponent {
 
   form: FormGroup;
+  submittedData: any[] = [];
 
   constructor(private fb: FormBuilder) {
     this.form = this.fb.group({
@@ -29,6 +30,15 @@ export class SecondComponent {
     this.addUnit(); 
     this.patchDefaultValues();
   }
+
+
+ngOnInit() {
+  const savedData = localStorage.getItem('formData');
+  if (savedData) {
+    this.submittedData = JSON.parse(savedData);
+  }
+}
+
 
  
   get units(): FormArray {
@@ -70,9 +80,27 @@ export class SecondComponent {
     });
   }
 
+  
+
+
   submit() {
     if (this.form.valid) {
-      console.log(this.form.value);
+      const formData = this.form.getRawValue();
+  
+    
+      const existingData = JSON.parse(localStorage.getItem('formData') || '[]');
+  
+      
+      existingData.push(formData);
+  
+     
+      localStorage.setItem('formData', JSON.stringify(existingData));
+  
+      alert('Form submitted successfully!');
+      this.form.reset();
+    } else {
+      alert('Please fill in all required fields.');
     }
   }
+  
 }

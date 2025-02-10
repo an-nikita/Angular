@@ -5,7 +5,7 @@
     <div class="form-group row">
       <div class="col-sm-6">
         <label for="companyName">Company Name *</label>
-        <input type="text" id="companyName" class="form-control" formControlName="companyName" />
+        <input placeholder="company name*"  id="companyName" class="form-control" formControlName="companyName" />
         <small *ngIf="form.get('companyName')?.invalid && form.get('companyName')?.touched" class="text-danger">
           This field is required
         </small>
@@ -24,7 +24,7 @@
     <div class="form-group row" formGroupName="address">
       <div class="col-sm-4">
         <label for="street">Street</label>
-        <input type="text" id="street" class="form-control" formControlName="street" />
+        <input placeholder="street"  id="street" class="form-control" formControlName="street" />
       </div>
 
       <div class="col-sm-4">
@@ -52,13 +52,12 @@
           </div>
 
           <div class="col-sm-2">
-        
             <input placeholder="Unit price *" formControlName="unitprice" />
           </div>
 
           <div class="col-sm-3">
             <label>Total Sum</label>
-            <input type="text" class="form-control" formControlName="totalSum" />
+            <input type="number" class="form-control" formControlName="totalSum" min="0"/>
           </div>
 
           <div class="col-sm-2 ">
@@ -80,4 +79,37 @@
 
     <button type="submit" class="btn btn-success mt-3" [disabled]="form.invalid">Submit</button>
   </form>
+</div>
+
+
+<div class="container mt-4">
+  <h4>Submitted Data</h4>
+  <table class="table table-bordered" *ngIf="submittedData.length > 0">
+    <thead>
+      <tr>
+        <th>Company Name</th>
+        <th>Country</th>
+        <th>Street</th>
+        <th>City</th>
+        <th>Zip</th>
+        <th>Units</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let data of submittedData">
+        <td>{{ data.companyName }}</td>
+        <td>{{ data.country }}</td>
+        <td>{{ data.address.street }}</td>
+        <td>{{ data.address.city }}</td>
+        <td>{{ data.address.zip }}</td>
+        <td>
+          <ul>
+            <li *ngFor="let unit of data.units">
+              {{ unit.unitName }} - Qty: {{ unit.quantity }}, Price: ${{ unit.unitprice }}, Total: ${{ unit.totalSum }}
+            </li>
+          </ul>
+        </td>
+      </tr>
+    </tbody>
+  </table>
 </div>
