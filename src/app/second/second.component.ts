@@ -70,7 +70,7 @@ export class SecondComponent {
       },
     });
   }
-
+/*
   valuepatch(unit:any):void{
   this.form.patchvalues({
 companyName:unit.companyName,
@@ -93,7 +93,7 @@ companyName:unit.companyName,
       );
     });
     }
-  }
+  }*/
 
   
   submit() {
