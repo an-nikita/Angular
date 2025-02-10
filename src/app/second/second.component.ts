@@ -71,6 +71,31 @@ export class SecondComponent {
     });
   }
 
+  valuepatch(unit:any):void{
+  this.form.patchvalues({
+companyName:unit.companyName,
+    country:unit.country,
+    street:unit.street,
+    city:unit.city,
+    pincode:unit.pincode
+    
+  });
+
+    this.units.clear();
+    unit.units.foreach((u:any))=>{
+    this.units.push(
+      this.fb.group({
+        unitName:[u.unitName,Validators.required],
+        quantity:[u.quantity,[validators,required,validators.min(1)],
+        unitprice:[u.unitPrice,[validators,required,validators.min(0)]],
+           totalsum:[{value:u.totalPrice,disbled:true}]
+                  })
+      );
+    });
+    }
+  }
+
+  
   submit() {
     if (this.form.valid) {
       const formData = this.form.getRawValue();
