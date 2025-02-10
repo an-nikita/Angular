@@ -1,50 +1,83 @@
+<div class="container mt-4">
+  <h4>Reactive Form</h4>
+  <form [formGroup]="form" (ngSubmit)="submit()">
+
+    <div class="form-group row">
+      <div class="col-sm-6">
+        <label for="companyName">Company Name *</label>
+        <input type="text" id="companyName" class="form-control" formControlName="companyName" />
+        <small *ngIf="form.get('companyName')?.invalid && form.get('companyName')?.touched" class="text-danger">
+          This field is required
+        </small>
+      </div>
+
+      <div class="col-sm-6">
+        <label for="country">Country *</label>
+        <input type="text" id="country" class="form-control" formControlName="country" />
+        <small *ngIf="form.get('country')?.invalid && form.get('country')?.touched" class="text-danger">
+          This field is required
+        </small>
+      </div>
+    </div>
 
 
-<div class="form-container">
-    
-    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
-    
-      <label>Full Name</label>
-      <input type="text" formControlName="fullName" />
-  
+    <div class="form-group row" formGroupName="address">
+      <div class="col-sm-4">
+        <label for="street">Street</label>
+        <input type="text" id="street" class="form-control" formControlName="street" />
+      </div>
+
+      <div class="col-sm-4">
+        <label for="city">City</label>
+        <input type="text" id="city" class="form-control" formControlName="city" />
+      </div>
+
+      <div class="col-sm-4">
+        <label for="zip">Zip</label>
+        <input type="text" id="zip" class="form-control" formControlName="zip" />
+      </div>
+    </div>
+
+    <div class="card mt-4 p-3">
+      <h5>Units</h5>
+      <div formArrayName="units">
+        <div *ngFor="let unit of units.controls; let i = index" [formGroupName]="i" class="form-group row align-items-end">
+          <div class="col-sm-3">
+              <input placeholder="Unit Name *" formControlName="unitName" />
+          </div>
+
+          <div class="col-sm-2">
+            <label>Quantity*</label>
+            <input type="number" class="form-control" formControlName="quantity" min="1" />
+          </div>
+
+          <div class="col-sm-2">
+        
+            <input placeholder="Unit price *" formControlName="unitprice" />
+          </div>
+
+          <div class="col-sm-3">
+            <label>Total Sum</label>
+            <input type="text" class="form-control" formControlName="totalSum" />
+          </div>
+
+          <div class="col-sm-2 ">
+            <button type="button" class="btn btn-danger btn-sm" (click)="removeUnit(i)">🗑️</button>
+
+     
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-4">
+      <button type="button" (click)="addUnit()">+ Add new unit</button>
+     </div>
+    </div>
+
    
-      <label>Username</label>
-      <input type="text" formControlName="username">
-      <div *ngIf="registerForm.get('username')?.invalid && registerForm.get('username')?.touched" class="error">
-        Username must be at least 6 characters
-      </div>
-  
-      
-      <label>Email</label>
-      <input type="email" formControlName="email" >
-      <div *ngIf="registerForm.get('email')?.invalid && registerForm.get('email')?.touched" class="error">
-        Email is invalid
-      </div>
-  
-      <label>Password</label>
-      <input type="password" formControlName="password" >
-  
-      <label>Confirm Password</label>
-      <input type="password" formControlName="confirmPassword">
-      <div *ngIf="registerForm.get('confirmPassword')?.touched && registerForm.get('confirmPassword')?.value !== registerForm.get('password')?.value" class="error">
-        Confirm Password does not match
-      </div>
-  
-    
-      <label>
-        <input type="checkbox" formControlName="acceptTerms" >
-        I have read and agree to the Terms 
-    </label>
-    <div *ngIf="registerForm.get('acceptTerms')?.invalid && registerForm.get('acceptTerms')?.touched" class="error">
-        Accept Terms is required
-       
-      </div>
-    <div class="btn1">
-      <button type="submit"  [disabled]="registerForm.invalid" class="register-btn">Register</button>
-      <button type="reset"  class="reset-btn">Reset</button>
+    <div class="mt-3">
+      <h5>Total Price: ${{ totalPrice }}</h5>
+    </div>
+
+    <button type="submit" class="btn btn-success mt-3" [disabled]="form.invalid">Submit</button>
+  </form>
 </div>
-  </form> 
-
-  </div>
-  
-

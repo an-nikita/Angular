@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 
-import { FormGroup, FormControl } from '@angular/forms';
+import { FormGroup, FormControl,FormBuilder,FormArray } from '@angular/forms';
 
 @Component({
   selector: 'app-second',
@@ -12,25 +12,67 @@ import { FormGroup, FormControl } from '@angular/forms';
 })
 export class SecondComponent {
 
+  form: FormGroup;
 
+  constructor(private fb: FormBuilder) {
+    this.form = this.fb.group({
+      companyName: ['', Validators.required],
+      country: ['', Validators.required],
+      address: this.fb.group({
+        street: [''],
+        city: [''],
+        zip: [''],
+      }),
+      units: this.fb.array([]),
+    });
 
-  registerForm = new FormGroup({
-    fullName: new FormControl('', Validators. required),
-    username: new FormControl('', [Validators.required, Validators.minLength(6)]),
-    email: new FormControl('', [Validators.required, Validators.email]),
-    password: new FormControl('', Validators.required),
-    confirmPassword: new FormControl('', Validators.required),
-    acceptTerms: new FormControl(false, Validators.requiredTrue)
-  });
-
- 
-  onSubmit() {
-    if (this.registerForm.valid) {
-      console.log(this.registerForm.value);
-    }
+    this.addUnit(); 
+    this.patchDefaultValues();
   }
 
+ 
+  get units(): FormArray {
+    return this.form.get('units') as FormArray;
+  }
 
+  createUnit(): FormGroup {
+    return this.fb.group({
+      unitName: ['', Validators.required],
+      quantity: [1, [Validators.required, Validators.min(1)]],
+      unitprice:['', Validators.required],
+      totalsum: [0, [Validators.required, Validators.min(0)]]
+    });
+  }
 
+  addUnit(): void {
+    this.units.push(this.createUnit());
+  }
 
+  removeUnit(index: number): void {
+    this.units.removeAt(index);
+  }
+
+  get totalPrice(): number {
+    return this.units.controls.reduce(
+      (sum, unit) => sum + (unit.get('totalSum')?.value || 0),
+      0
+    );
+  }
+
+  patchDefaultValues(): void {
+    this.form.patchValue({
+     
+      country: 'Slovakia',
+      address: {
+        city: 'Nove Zamky',
+        zip: '81101',
+      },
+    });
+  }
+
+  submit() {
+    if (this.form.valid) {
+      console.log(this.form.value);
+    }
+  }
 }
