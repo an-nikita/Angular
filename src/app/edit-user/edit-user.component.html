@@ -1,5 +1,5 @@
 <div *ngIf="submittedData.length > 0">
-    <h3>Form Data in Table Format</h3>
+    
     <div>
       <table border="1">
         <tr>
@@ -10,6 +10,7 @@
           <th>Pincode</th>
           <th>Unit Name</th>
           <th>Total Price</th>
+          <th>Action</th>
         </tr>
         <tr *ngFor="let unit of submittedData; let i = index" >
           <td>{{ unit.companyName }}</td>

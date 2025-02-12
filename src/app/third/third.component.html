@@ -3,13 +3,13 @@
       <div class="form-field">
           <div class="input-field">
               <label>Company Name:</label>
-              <input formControlName="companyName" placeholder="Enter company name" style="width: 30%;">
+              <input formControlName="companyName"  style="width: 30%;">
               <span *ngIf="form.get('companyName')?.invalid && form.get('companyName')?.touched">
                   Company name is required.
               </span>
 
               <label>Country:</label>
-              <input formControlName="country" placeholder="Enter country" style="width: 30%;">
+              <input formControlName="country"  style="width: 30%;">
               <div *ngIf="form.get('country')?.invalid && form.get('country')?.touched">
                   Country is required.
               </div>
@@ -17,19 +17,19 @@
 
           <div class="input-field">
               <label>Street:</label>
-              <input formControlName="street" placeholder="Enter street" size="30">
+              <input formControlName="street"  size="30">
               <div *ngIf="form.get('street')?.invalid && form.get('street')?.touched">
                   Street is required.
               </div>
 
               <label>City:</label>
-              <input formControlName="city" placeholder="Enter city" size="30">
+              <input formControlName="city"  size="30">
               <div *ngIf="form.get('city')?.invalid && form.get('city')?.touched">
                   City is required.
               </div>
 
               <label>Pincode:</label>
-              <input formControlName="pincode" placeholder="Enter pincode" size="30">
+              <input formControlName="pincode"  size="30">
               <div *ngIf="form.get('pincode')?.invalid && form.get('pincode')?.touched">
                   Pincode is required and must be 6 digits.
               </div>
@@ -40,16 +40,16 @@
           <div formArrayName="units">
               <div *ngFor="let unit of units.controls; let i = index" [formGroupName]="i">
                   <label>Unit Name:</label>
-                  <input formControlName="unitName" placeholder="Enter unit name">
+                  <input formControlName="unitName" >
 
                   <label>Quantity:</label>
-                  <input formControlName="quantity" placeholder="Enter quantity" type="number">
+                  <input formControlName="quantity"  type="number">
 
                   <label>Unit Price:</label>
-                  <input formControlName="unitPrice" placeholder="Enter unit price" type="number">
+                  <input formControlName="unitPrice"  type="number">
 
                   <label>Total Price:</label>
-                  <input formControlName="totalPrice" placeholder="Total price" type="number">
+                  <input formControlName="totalPrice"  type="number">
 
                   <button type="button" (click)="removeUnit(i)">Remove Unit</button>
 
@@ -63,7 +63,9 @@
                       Unit price is required and must be at least 0.
                   </div>
               </div>
+              <div class="col-md-4">
               <button type="button" (click)="addUnit()">Add Unit</button>
+          </div>
           </div>
       </div>
 
