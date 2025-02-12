@@ -21,7 +21,7 @@ export class ThirdComponent implements OnInit {
       country: ['', Validators.required],
       street: ['', Validators.required],
       city: ['', Validators.required],
-      pincode: ['', [Validators.required, Validators.pattern('^[0-9]{6}$')]],
+      pincode: ['', [Validators.required, Validators.pattern('^[0-9]{4}$')]],
       units: this.fb.array([this.createUnit()])
     });
   }
