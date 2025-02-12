@@ -63,7 +63,7 @@
           <div class="col-sm-2 ">
             <button type="button" class="btn btn-danger btn-sm" (click)="removeUnit(i)">🗑️</button>   
           </div>
-          
+
         </div>
       </div>
       <div class="col-sm-4">
@@ -79,32 +79,31 @@
     <button type="submit" class="btn btn-success mt-3" [disabled]="form.invalid">Submit</button>
   </form>
 </div>
-
-
 <div class="container mt-4">
   <h4>Submitted Data</h4>
+
   <table class="table table-bordered" *ngIf="submittedData.length > 0">
     <thead>
       <tr>
         <th>Company Name</th>
         <th>Country</th>
-        <th>Street</th>
-        <th>City</th>
-        <th>Zip</th>
+        <th>Address</th>
         <th>Units</th>
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let data of submittedData" click="valuepatch()">
+      <tr *ngFor="let data of submittedData" >
         <td>{{ data.companyName }}</td>
         <td>{{ data.country }}</td>
-        <td>{{ data.address.street }}</td>
-        <td>{{ data.address.city }}</td>
-        <td>{{ data.address.zip }}</td>
+        <td>
+          {{ data.address.street }}, 
+          {{ data.address.city }}, 
+          {{ data.address.zip }}
+        </td>
         <td>
           <ul>
             <li *ngFor="let unit of data.units">
-              {{ unit.unitName }} - Qty: {{ unit.quantity }}, Price: ${{ unit.unitprice }}, Total: ${{ unit.totalSum }}
+              {{ unit.unitName }} - Qty: {{ unit.quantity }}, Price: ${{ unit.unitprice }}, Total: ${{ unit.totalsum }}
             </li>
           </ul>
         </td>

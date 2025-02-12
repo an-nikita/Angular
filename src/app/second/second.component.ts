@@ -12,8 +12,9 @@ import { FormGroup, FormControl,FormBuilder,FormArray } from '@angular/forms';
 })
 export class SecondComponent {
 
+  
   form: FormGroup;
-  submittedData: any[] = [];
+  submittedData: any[] = []; 
 
   constructor(private fb: FormBuilder) {
     this.form = this.fb.group({
@@ -27,12 +28,11 @@ export class SecondComponent {
       units: this.fb.array([]),
     });
 
-    this.addUnit(); 
+    this.addUnit();
     this.patchDefaultValues();
+   
   }
 
-
- 
   get units(): FormArray {
     return this.form.get('units') as FormArray;
   }
@@ -41,13 +41,20 @@ export class SecondComponent {
     return this.fb.group({
       unitName: ['', Validators.required],
       quantity: [1, [Validators.required, Validators.min(1)]],
-      unitprice:['', Validators.required],
+      unitprice: ['', Validators.required],
       totalsum: [0, [Validators.required, Validators.min(0)]]
     });
   }
 
   addUnit(): void {
-    this.units.push(this.createUnit());
+    const unit = this.createUnit();
+
+    unit.valueChanges.subscribe((value) => {
+      const total = (value.quantity || 0) * (value.unitprice || 0);
+      unit.patchValue({ totalsum: total }, { emitEvent: false });
+    });
+
+    this.units.push(unit);
   }
 
   removeUnit(index: number): void {
@@ -56,7 +63,7 @@ export class SecondComponent {
 
   get totalPrice(): number {
     return this.units.controls.reduce(
-      (sum, unit) => sum + (unit.get('totalSum')?.value || 0),
+      (sum, unit) => sum + (unit.get('totalsum')?.value || 0),
       0
     );
   }
@@ -70,32 +77,8 @@ export class SecondComponent {
       },
     });
   }
-/*
-  valuepatch(unit:any):void{
-  this.form.patchvalues({
-companyName:unit.companyName,
-    country:unit.country,
-    street:unit.street,
-    city:unit.city,
-    pincode:unit.pincode
-    
-  });
 
-    this.units.clear();
-    unit.units.foreach((u:any))=>{
-    this.units.push(
-      this.fb.group({
-        unitName:[u.unitName,Validators.required],
-        quantity:[u.quantity,[validators,required,validators.min(1)],
-        unitprice:[u.unitPrice,[validators,required,validators.min(0)]],
-           totalsum:[{value:u.totalPrice,disbled:true}]
-                  })
-      );
-    });
-    }
-  }*/
 
-  
   submit() {
     if (this.form.valid) {
       const formData = this.form.getRawValue();
