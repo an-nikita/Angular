@@ -41,10 +41,23 @@ export class EditUserComponent implements OnInit {
   }
 
   editdata(id:number){
+      // console.log(id)
+    // this.router.navigate(['/third', id]); // Navigate with index as param
+    this.router.navigateByUrl(`/third/${id}`)
 
-    this.router.navigate(['/third', id]); // Navigate with index as param
+
 }
 
+
+
+deletedata(id:number){
+  console.log(id)
+
+  this.userService.deletedata(id).subscribe((data:any)=>{
+    console.log(data);
+  })
+ 
+}
 
 
 

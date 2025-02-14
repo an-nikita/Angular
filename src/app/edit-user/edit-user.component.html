@@ -11,6 +11,7 @@
           <th>Unit Name</th>
           <th>Total Price</th>
           <th>Action</th>
+          <th>Action</th>
         </tr>
         <tr *ngFor="let unit of userData; let i = index" >
           <td>{{ unit.company_name }}</td>
@@ -29,7 +30,12 @@
               <li *ngFor="let data of unit.units">{{ data.total_price }}</li>
             </ul>
           </td>
-          <td><button (click)="editdata(unit.company_id)">Edit</button> </td> 
+          <td><button (click)="editdata(unit.company_id)">Edit</button> </td>
+          
+          
+
+          <td><button (click)="deletedata(unit.company_id)" >Delete</button> </td> 
+          
         </tr>
       </table>
     </div>

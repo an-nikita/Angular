@@ -99,19 +99,19 @@ sendData(){
   }
 
 
-  deleteCompany() {
-    const company_id = "11"; // Change this ID as needed
-    this.userService.deletedata(company_id).subscribe(
-      (response: any) => {
-        console.log(`Deleted Company ID ${company_id}`, response);
-        this.userData = []; // Clear the displayed data
+  // deleteCompany() {
+  //   const company_id = "11"; // Change this ID as needed
+  //   // this.userService.deletedata(company_id).subscribe(
+  //     (response: any) => {
+  //       console.log(`Deleted Company ID ${company_id}`, response);
+  //       this.userData = []; // Clear the displayed data
       
-      },
-      (error: any) => {
-        console.error("Delete Error:", error);
-      }
-    );
-  }
+  //     },
+  //     (error: any) => {
+  //       console.error("Delete Error:", error);
+  //     }
+  //   );
+  // }
   
 }
 function ngOnInit() {

@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
 import { FormsModule, ReactiveFormsModule, FormArray, FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { ActivatedRoute,Router,Route,RouterLink,RouterLinkActive,ParamMap } from '@angular/router';
+import { ServicedataService } from '../../servicedata.service';
 @Component({
   selector: 'app-third',
   standalone: true,
@@ -14,8 +15,8 @@ export class ThirdComponent implements OnInit {
   table: boolean = false;
   submittedData: any[] = [];
   editingIndex: number | null = null;
-
-  constructor(private fb: FormBuilder, private router: Router, private route: ActivatedRoute) {
+id:any;
+  constructor(private fb: FormBuilder, private router: Router, private route: ActivatedRoute,private Service:ServicedataService) {
     this.form = this.fb.group({
       companyName: ['', Validators.required],
       country: ['', Validators.required],
@@ -31,18 +32,30 @@ export class ThirdComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.trackTotalPrice();
+    // this.trackTotalPrice();
 
+    // this.id = this.route.snapshot.paramMap.get('id')
+    //  console.log("IDdddddddddddddddd=>",this.id);
     // // Retrieve data from paramMap
-    // this.route.paramMap.subscribe((params: ParamMap) => {
-    //   const index: string | null = params.get('index');
-    //   if (index !== null) {
-    //   this.editingIndex = +index; 
-    //   // this.loadData();
-    //   }
-    // });
+    this.route.paramMap.subscribe((params: ParamMap) => {
+      const index: string | null = params.get('index');
+      if (index !== null) {
+      this.editingIndex = +index;
+      console.log(index) 
+      // this.loadData();
+      }
+    });
   }
-  // loadData(): void {
+
+
+  
+  loadData(): void {
+
+    // this.Service.getsSpecificone(this.id).subscribe((data:any)=>{
+      // console.log("Specific dataaaa ==>>",data);
+      
+
+
   //   const storedData = localStorage.getItem('submittedData');
   //   if (storedData) {
   //     this.submittedData = JSON.parse(storedData);
@@ -50,7 +63,52 @@ export class ThirdComponent implements OnInit {
   //       this.patchForm(this.submittedData[this.editingIndex]);
   //     }
   //   }
-  // }
+
+  this.Service.getsSpecificone(this.id).subscribe(
+    (data: any) => {
+      console.log("Fetched data:", data);
+      if (data) {
+        this.patchForm(data);
+      }
+    },
+    (error) => {
+      console.error("Error fetching data:", error);
+    }
+  );
+
+   }
+
+
+  patchForm(unit: any): void {
+    if (!unit) return;
+  
+    this.form.patchValue({
+      companyName: unit.companyName || 'gfhg',
+      country: unit.country || '',
+      street: unit.street || '',
+      city: unit.city || '',
+      pincode: unit.pincode || ''
+    });
+  
+  
+     this.units.clear();
+  
+     if (unit.units && unit.units.length > 0) {
+       unit.units.forEach((u: any) => {
+         const unitGroup = this.fb.group({
+          unitName: [u.unitName || '', Validators.required],
+          quantity: [u.quantity || 1, [Validators.required, Validators.min(1)]],
+           unitPrice: [u.unitPrice || 0, [Validators.required, Validators.min(0)]],
+           totalPrice: [{ value: u.totalPrice || 0, disabled: true }]
+        });
+  
+         this.trackTotalPriceForUnit(unitGroup);
+       this.units.push(unitGroup);
+       });
+    }
+  }
+  
+
   
   createUnit(): FormGroup {
     return this.fb.group({
@@ -91,7 +149,21 @@ export class ThirdComponent implements OnInit {
 
   onSubmit(): void {
 
-
+    if (this.form.valid) {
+      const formData = this.form.value;
+      if (this.id) {
+        this.Service.updateCompany(this.id, formData).subscribe(() => {
+          alert('Company Updated Successfully');
+          this.router.navigate(['/edit-user']);
+        });
+      } else {
+        this.Service.addCompany(formData).subscribe(() => {
+          alert('Company Added Successfully');
+          this.router.navigate(['/edit-user']);
+        });
+      }
+    }
+  }
 
     // if (this.form.valid) {
     //   this.enableTotalPriceFields();
@@ -125,35 +197,9 @@ export class ThirdComponent implements OnInit {
   //     (unit as FormGroup).get('totalPrice')?.enable();
   //   });
   // }
-  // patchForm(unit: any): void {
-  //   if (!unit) return;
-  
-  //   this.form.patchValue({
-  //     companyName: unit.companyName || 'gfhg',
-  //     country: unit.country || '',
-  //     street: unit.street || '',
-  //     city: unit.city || '',
-  //     pincode: unit.pincode || ''
-  //   });
-  
-   
-  //   this.units.clear();
-  
-  //   if (unit.units && unit.units.length > 0) {
-  //     unit.units.forEach((u: any) => {
-  //       const unitGroup = this.fb.group({
-  //         unitName: [u.unitName || '', Validators.required],
-  //         quantity: [u.quantity || 1, [Validators.required, Validators.min(1)]],
-  //         unitPrice: [u.unitPrice || 0, [Validators.required, Validators.min(0)]],
-  //         totalPrice: [{ value: u.totalPrice || 0, disabled: true }]
-  //       });
-  
-  //       this.trackTotalPriceForUnit(unitGroup);
-  //       this.units.push(unitGroup);
-  //     });
-  //   }
-  // }
-  
+
 
   
-}
+  
+
+

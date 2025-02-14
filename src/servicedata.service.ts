@@ -33,12 +33,25 @@ putdata(id: string, updatedData: any) {
 //   return this.http.delete(`${this.apiUrl}/${id}`);
 // }
 
-deletedata(id: string) {
-  return this.http.delete(`${this.apiUrl}?id=${id}`, {
+deletedata(id: number) {
+  return this.http.delete(`${this.apiUrl}?id=${id}`, 
+    {
     headers: { 'Content-Type': 'application/json' }
   });
 }
+getsSpecificone(id:any){
 
+return this.http.get(`${this.apiUrl}?id=${id}`)
 
+}
+ // Add Company
+ addCompany(companyData: any) {
+  return this.http.post(`${this.apiUrl}/company`, companyData);
+}
+
+// Update Company
+updateCompany(id: number, companyData: any) {
+  return this.http.put(`${this.apiUrl}/company/${id}`, companyData);
+}
 }
 
