@@ -3,7 +3,10 @@ import { provideRouter } from '@angular/router';
 
 import { routes } from './app.routes';
 import { FormsModule } from '@angular/forms';
+import { HttpClient, provideHttpClient, withFetch } from '@angular/common/http';
 
 export const appConfig: ApplicationConfig = {
-  providers: [provideZoneChangeDetection({ eventCoalescing: true }), provideRouter(routes),FormsModule]
+  providers: [provideZoneChangeDetection({ eventCoalescing: true }), provideRouter(routes),FormsModule,provideHttpClient(),
+    provideHttpClient(withFetch(),),
+  ]
 };

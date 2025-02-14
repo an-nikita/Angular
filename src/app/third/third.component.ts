@@ -33,24 +33,24 @@ export class ThirdComponent implements OnInit {
   ngOnInit(): void {
     this.trackTotalPrice();
 
-    // Retrieve data from paramMap
-    this.route.paramMap.subscribe((params: ParamMap) => {
-      const index: string | null = params.get('index');
-      if (index !== null) {
-      this.editingIndex = +index; 
-      this.loadData();
-      }
-    });
+    // // Retrieve data from paramMap
+    // this.route.paramMap.subscribe((params: ParamMap) => {
+    //   const index: string | null = params.get('index');
+    //   if (index !== null) {
+    //   this.editingIndex = +index; 
+    //   // this.loadData();
+    //   }
+    // });
   }
-  loadData(): void {
-    const storedData = localStorage.getItem('submittedData');
-    if (storedData) {
-      this.submittedData = JSON.parse(storedData);
-      if (this.editingIndex !== null && this.submittedData[this.editingIndex]) {
-        this.patchForm(this.submittedData[this.editingIndex]);
-      }
-    }
-  }
+  // loadData(): void {
+  //   const storedData = localStorage.getItem('submittedData');
+  //   if (storedData) {
+  //     this.submittedData = JSON.parse(storedData);
+  //     if (this.editingIndex !== null && this.submittedData[this.editingIndex]) {
+  //       this.patchForm(this.submittedData[this.editingIndex]);
+  //     }
+  //   }
+  // }
   
   createUnit(): FormGroup {
     return this.fb.group({
@@ -64,7 +64,7 @@ export class ThirdComponent implements OnInit {
   addUnit(): void {
     const unitGroup = this.createUnit();
     this.units.push(unitGroup);
-    this.trackTotalPriceForUnit(unitGroup);
+    // this.trackTotalPriceForUnit(unitGroup);
   }
 
   removeUnit(index: number): void {
@@ -90,65 +90,70 @@ export class ThirdComponent implements OnInit {
   }
 
   onSubmit(): void {
-    if (this.form.valid) {
-      this.enableTotalPriceFields();
 
-      const formData = this.form.value;
-      let storedData = localStorage.getItem('submittedData');
-      this.submittedData = storedData ? JSON.parse(storedData) : [];
 
-      if (this.editingIndex !== null) {
+
+    // if (this.form.valid) {
+    //   this.enableTotalPriceFields();
+
+    //   const formData = this.form.value;
+    //   let storedData = localStorage.getItem('submittedData');
+    //   this.submittedData = storedData ? JSON.parse(storedData) : [];
+
+    //   if (this.editingIndex !== null) {
         
-        this.submittedData[this.editingIndex] = formData;
-        this.editingIndex = null; 
-      } else {
+    //     this.submittedData[this.editingIndex] = formData;
+    //     this.editingIndex = null; 
+    //   } else {
         
-        this.submittedData.push(formData);
-      }
+    //     this.submittedData.push(formData);
+    //   }
 
-      localStorage.setItem('submittedData', JSON.stringify(this.submittedData));
-      alert('Form Submitted Successfully');
+    //   localStorage.setItem('submittedData', JSON.stringify(this.submittedData));
+    //   alert('Form Submitted Successfully');
 
-      this.units.clear();
-      this.addUnit();
-      this.form.reset();
-      this.table = true;
-    }
+    //   this.units.clear();
+    //   this.addUnit();
+    //   this.form.reset();
+    //   this.table = true;
+    // }
   }
 
   
-  enableTotalPriceFields(): void {
-    this.units.controls.forEach((unit) => {
-      (unit as FormGroup).get('totalPrice')?.enable();
-    });
-  }
-  patchForm(unit: any): void {
-    if (!unit) return;
+  // enableTotalPriceFields(): void {
+  //   this.units.controls.forEach((unit) => {
+  //     (unit as FormGroup).get('totalPrice')?.enable();
+  //   });
+  // }
+  // patchForm(unit: any): void {
+  //   if (!unit) return;
   
-    this.form.patchValue({
-      companyName: unit.companyName || 'gfhg',
-      country: unit.country || '',
-      street: unit.street || '',
-      city: unit.city || '',
-      pincode: unit.pincode || ''
-    });
+  //   this.form.patchValue({
+  //     companyName: unit.companyName || 'gfhg',
+  //     country: unit.country || '',
+  //     street: unit.street || '',
+  //     city: unit.city || '',
+  //     pincode: unit.pincode || ''
+  //   });
   
    
-    this.units.clear();
+  //   this.units.clear();
   
-    if (unit.units && unit.units.length > 0) {
-      unit.units.forEach((u: any) => {
-        const unitGroup = this.fb.group({
-          unitName: [u.unitName || '', Validators.required],
-          quantity: [u.quantity || 1, [Validators.required, Validators.min(1)]],
-          unitPrice: [u.unitPrice || 0, [Validators.required, Validators.min(0)]],
-          totalPrice: [{ value: u.totalPrice || 0, disabled: true }]
-        });
+  //   if (unit.units && unit.units.length > 0) {
+  //     unit.units.forEach((u: any) => {
+  //       const unitGroup = this.fb.group({
+  //         unitName: [u.unitName || '', Validators.required],
+  //         quantity: [u.quantity || 1, [Validators.required, Validators.min(1)]],
+  //         unitPrice: [u.unitPrice || 0, [Validators.required, Validators.min(0)]],
+  //         totalPrice: [{ value: u.totalPrice || 0, disabled: true }]
+  //       });
   
-        this.trackTotalPriceForUnit(unitGroup);
-        this.units.push(unitGroup);
-      });
-    }
-  }
+  //       this.trackTotalPriceForUnit(unitGroup);
+  //       this.units.push(unitGroup);
+  //     });
+  //   }
+  // }
+  
+
   
 }

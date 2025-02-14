@@ -7,10 +7,10 @@ import { FirstComponent} from './first/first.component'
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-
+import { ClientComponent } from './client/client.component';
 @Component({
   selector: 'app-root',
-  imports: [FirstComponent,ReactiveFormsModule,FormsModule,CommonModule,SecondComponent,ThirdComponent,RouterOutlet,RouterLink,RouterLinkActive],
+  imports: [ReactiveFormsModule,FormsModule,CommonModule,RouterOutlet,RouterLink,RouterLinkActive],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })

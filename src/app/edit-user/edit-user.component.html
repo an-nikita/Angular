@@ -1,4 +1,4 @@
-<div *ngIf="submittedData.length > 0">
+<div *ngIf="userData.length > 0">
     
     <div>
       <table border="1">
@@ -7,28 +7,29 @@
           <th>Country</th>
           <th>Street</th>
           <th>City</th>
-          <th>Pincode</th>
+          <th>State</th>
           <th>Unit Name</th>
           <th>Total Price</th>
           <th>Action</th>
         </tr>
-        <tr *ngFor="let unit of submittedData; let i = index" >
-          <td>{{ unit.companyName }}</td>
+        <tr *ngFor="let unit of userData; let i = index" >
+          <td>{{ unit.company_name }}</td>
           <td>{{ unit.country }}</td>
           <td>{{ unit.street }}</td>
           <td>{{ unit.city }}</td>
-          <td>{{ unit.pincode }}</td>
+          <td>{{ unit.state }}</td>
           <td>
             <ul>
-              <li *ngFor="let data of unit.units">{{ data.unitName }}</li>
+              <li *ngFor="let data of unit.units">{{ data.unit_name }}</li>
+              
             </ul>
           </td>
           <td>
             <ul>
-              <li *ngFor="let data of unit.units">{{ data.totalPrice }}</li>
+              <li *ngFor="let data of unit.units">{{ data.total_price }}</li>
             </ul>
           </td>
-          <td><button (click)="patchForm(i)">Edit</button> </td>
+          <td><button (click)="editdata(unit.company_id)">Edit</button> </td> 
         </tr>
       </table>
     </div>
