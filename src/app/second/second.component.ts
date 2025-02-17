@@ -12,92 +12,149 @@ import { FormGroup, FormControl,FormBuilder,FormArray } from '@angular/forms';
 })
 export class SecondComponent {
 
-  
-  form: FormGroup;
-  submittedData: any[] = []; 
-
-  constructor(private fb: FormBuilder) {
+ 
+form: FormGroup;
+submittedData: any[] = []; 
+constructor(private fb: FormBuilder) {
     this.form = this.fb.group({
       companyName: ['', Validators.required],
       country: ['', Validators.required],
-      address: this.fb.group({
-        street: [''],
-        city: [''],
-        zip: [''],
-      }),
-      units: this.fb.array([]),
+      street: ['', Validators.required],
+      city: ['', Validators.required],
+      pincode: ['', [Validators.required, Validators.pattern('^[0-9]{4}$')]],
+      units: this.fb.array([this.createUnit()])
     });
-
-    this.addUnit();
-    this.patchDefaultValues();
-   
   }
 
   get units(): FormArray {
     return this.form.get('units') as FormArray;
   }
 
+
+  ngOnInit(): void {
+     this.trackTotalPrice();
+      //this.loadData();
+  }
+
+  
+
   createUnit(): FormGroup {
     return this.fb.group({
       unitName: ['', Validators.required],
       quantity: [1, [Validators.required, Validators.min(1)]],
-      unitprice: ['', Validators.required],
-      totalsum: [0, [Validators.required, Validators.min(0)]]
+      unitPrice: [0, [Validators.required, Validators.min(0)]],
+      totalPrice: [{ value: 0, disabled: true }]
     });
   }
 
   addUnit(): void {
-    const unit = this.createUnit();
-
-    unit.valueChanges.subscribe((value) => {
-      const total = (value.quantity || 0) * (value.unitprice || 0);
-      unit.patchValue({ totalsum: total }, { emitEvent: false });
-    });
-
-    this.units.push(unit);
+    const unitGroup = this.createUnit();
+    this.units.push(unitGroup);
+     this.trackTotalPriceForUnit(unitGroup);
   }
 
   removeUnit(index: number): void {
     this.units.removeAt(index);
   }
 
-  get totalPrice(): number {
-    return this.units.controls.reduce(
-      (sum, unit) => sum + (unit.get('totalsum')?.value || 0),
-      0
-    );
-  }
-
-  patchDefaultValues(): void {
-    this.form.patchValue({
-      country: 'Slovakia',
-      address: {
-        city: 'Nove Zamky',
-        zip: '81101',
-      },
+  trackTotalPrice(): void {
+    this.units.controls.forEach((unit) => {
+      this.trackTotalPriceForUnit(unit as FormGroup);
     });
   }
 
+  trackTotalPriceForUnit(unit: FormGroup): void {
+    unit.get('quantity')?.valueChanges.subscribe(() => this.updateTotalPrice(unit));
+    unit.get('unitPrice')?.valueChanges.subscribe(() => this.updateTotalPrice(unit));
+  }
 
-  submit() {
-    if (this.form.valid) {
-      const formData = this.form.getRawValue();
-    
-      const existingData = JSON.parse(localStorage.getItem('formData') || '[]');
+  updateTotalPrice(unit: FormGroup): void {
+    const quantity = unit.get('quantity')?.value || 0;
+    const unitPrice = unit.get('unitPrice')?.value || 0;
+    const totalPrice = quantity * unitPrice;
+    unit.get('totalPrice')?.setValue(totalPrice);
+  }
+
+
+  // load data on localstroge
+  // onSubmit(): void {
+
+  //   if (this.form.valid) {
+  //     // const formData = this.form.value;
+
+
+
+  //      const formData = this.form.getRawValue();
+  //      this.submittedData.push(formData);
+  //      localStorage.setItem('submittedData', JSON.stringify(this.submittedData));
+  //      this.form.reset();
+  //      this.units.clear();
+  //      this.addUnit();
+  //    }
+  //  }
+ 
+  //  loadData(): void {
+  //    const storedData = localStorage.getItem('submittedData');
+  //    if (storedData) {
+  //      this.submittedData = JSON.parse(storedData);
+  //    }
+  //  }
+
+
+
+
+  editEntry(index: number): void {
+    this.editIndex = index;
+    const data = this.submittedData[index];
+    this.form.patchValue({
+      companyName: data.companyName,
+      country: data.country,
+      street: data.street,
+      city: data.city,
+      pincode: data.pincode
+    });
+   // Clear and repopulate units
+    this.units.clear();
   
-      existingData.push(formData);
-     
-      localStorage.setItem('formData', JSON.stringify(existingData));
-  
-      alert('Form submitted successfully!');
-      const savedData = localStorage.getItem('formData');
-      if (savedData) {
-        this.submittedData = JSON.parse(savedData);
-      }
-      this.form.reset();
-    } else {
-      alert('Please fill in all required fields.');
-    }
+    data.units.forEach((unit: any) => {
+      const unitGroup = this.createUnit();
+      unitGroup.patchValue(unit);
+      this.units.push(unitGroup);
+
+      this.updateTotalPrice(unitGroup);  // **Recalculate total price**
+      this.trackTotalPriceForUnit(unitGroup);
+    });
   }
   
-}
+
+
+  deleteEntry(index: number): void {
+    this.submittedData.splice(index, 1);
+    localStorage.setItem('submittedData', JSON.stringify(this.submittedData));
+  }
+
+  editIndex: number | null = null;
+  
+  onSubmit(): void {
+    if (this.form.valid) {
+      const formData = this.form.getRawValue();
+  
+      if (this.editIndex !== null) {
+
+        // Update existing entry
+        this.submittedData[this.editIndex] = formData;
+        this.editIndex = null;
+      } else {
+
+        // Add new entry
+        this.submittedData.push(formData);
+      }
+  
+      localStorage.setItem('submittedData', JSON.stringify(this.submittedData));
+      this.form.reset();
+      this.units.clear();
+      this.addUnit();
+    }
+  }
+
+ }

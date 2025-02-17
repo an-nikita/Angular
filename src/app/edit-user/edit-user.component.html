@@ -1,3 +1,6 @@
+<button (click)="showData()">GETDATA</button>
+<button (click)="add()">PUTDATA</button>
+
 <div *ngIf="userData.length > 0">
     
     <div>
@@ -30,11 +33,10 @@
               <li *ngFor="let data of unit.units">{{ data.total_price }}</li>
             </ul>
           </td>
-          <td><button (click)="editdata(unit.company_id)">Edit</button> </td>
-          
-          
 
-          <td><button (click)="deletedata(unit.company_id)" >Delete</button> </td> 
+          <td><button (click)="editData(unit.company_id)">Edit</button> </td>
+          
+          <td><button (click)="deleteData(unit.company_id)" >Delete</button> </td> 
           
         </tr>
       </table>

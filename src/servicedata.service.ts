@@ -23,22 +23,32 @@ postdata(data:any){
 //   return this.http.put(`${this.apiUrl}/${id}`, updatedData);
 // }
 
-putdata(id: string, updatedData: any) {
-  return this.http.put(`${this.apiUrl}?id=${id}`, updatedData, {
-    headers: { 'Content-Type': 'application/json' }
-  });
-}
-
 // deletedata(id: string) {
 //   return this.http.delete(`${this.apiUrl}/${id}`);
 // }
 
-deletedata(id: number) {
-  return this.http.delete(`${this.apiUrl}?id=${id}`, 
-    {
-    headers: { 'Content-Type': 'application/json' }
+
+
+Delete(id: String) {
+  return this.http.delete(`${this.apiUrl}?id=${id}`, {
   });
 }
+
+
+putdata(id: string, updatedData: any) {  
+  return this.http.put(`${this.apiUrl}?id=${id}`, updatedData, {
+    //headers: { 'Content-Type': 'application/json' }
+  });
+}
+
+
+deletedata(id: number) {     //this method edituser.ts file
+  return this.http.delete(`${this.apiUrl}?id=${id}`, {   
+   // headers: { 'Content-Type': 'application/json' }
+  });
+}
+
+
 getsSpecificone(id:any){
 
 return this.http.get(`${this.apiUrl}?id=${id}`)

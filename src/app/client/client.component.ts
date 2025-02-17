@@ -41,7 +41,7 @@ Postdata={
 updateData={
 
 
-  "company_name": "webtech",
+  "company_name": "trix",
   "country": "india",
   "street": "kothrod",
   "city": "New York",
@@ -87,7 +87,7 @@ sendData(){
 
   // Update Data (PUT)
   updateCompany() {
-    const company_id = "11"; 
+    const company_id = "135"; 
     this.userService.putdata(company_id, this.updateData).subscribe(
       (response: any) => {
         console.log("Updated Data:", response);
@@ -99,22 +99,22 @@ sendData(){
   }
 
 
-  // deleteCompany() {
-  //   const company_id = "11"; // Change this ID as needed
-  //   // this.userService.deletedata(company_id).subscribe(
-  //     (response: any) => {
-  //       console.log(`Deleted Company ID ${company_id}`, response);
-  //       this.userData = []; // Clear the displayed data
+  delete() {
+    const company_id = "66"; // Change this ID as needed
+     this.userService.Delete(company_id).subscribe(
+      (response: any) => {
+        console.log(`Deleted Company ID ${company_id}`, response);
+       // this.userData = []; // Clear the displayed data
       
-  //     },
-  //     (error: any) => {
-  //       console.error("Delete Error:", error);
-  //     }
-  //   );
-  // }
+      },
+      (error: any) => {
+        console.error("Delete Error:", error);
+      }
+    );
+  }
   
-}
-function ngOnInit() {
-  throw new Error('Function not implemented.');
-}
+ }
+// function ngOnInit() {
+//   throw new Error('Function not implemented.');
+// }
 

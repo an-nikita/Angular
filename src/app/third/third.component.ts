@@ -122,7 +122,7 @@ id:any;
   addUnit(): void {
     const unitGroup = this.createUnit();
     this.units.push(unitGroup);
-    // this.trackTotalPriceForUnit(unitGroup);
+    this.trackTotalPriceForUnit(unitGroup);
   }
 
   removeUnit(index: number): void {
